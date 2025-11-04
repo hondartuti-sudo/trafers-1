@@ -1,19 +1,388 @@
-text-align: center;
-            margin-top: 60px;
-            padding: 20px;
-            color: #e0e0e0;
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameRush - Премиум игровая платформа</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
+        :root {
+            --primary: #00ffff;
+            --secondary: #ff0080;
+            --accent: #00ff88;
+            --dark: #0a0a1f;
+            --darker: #050510;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 50%, #1a1a2e 100%);
+            color: #fff;
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 40px 0 30px;
+        }
+
+        .logo {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            border-radius: 50%;
+        }
+
+        .tagline {
+            font-size: clamp(1rem, 4vw, 1.3rem);
+            opacity: 0.9;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Promo Banner */
+        .promo-banner {
+            background: linear-gradient(135deg, 
+                rgba(0, 255, 255, 0.15), 
+                rgba(255, 0, 128, 0.15));
+            border-radius: 20px;
+            padding: clamp(20px, 5vw, 30px);
+            margin: 30px 0;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.1), 
+                transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .promo-title {
+            font-size: clamp(1.5rem, 6vw, 2.2rem);
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .promo-code {
+            font-size: clamp(2rem, 10vw, 3.5rem);
+            font-weight: 900;
+            background: var(--dark);
+            color: var(--accent);
+            padding: clamp(15px, 4vw, 20px) clamp(25px, 6vw, 40px);
+            border-radius: 15px;
+            display: inline-block;
+            margin: 15px 0;
+            border: 2px solid var(--accent);
+            animation: pulse 2s infinite;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .promo-description {
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+            opacity: 0.9;
+        }
+
+        /* Warning */
+        .warning {
+            background: rgba(255, 68, 68, 0.1);
+            border-left: 4px solid #ff4444;
+            padding: 20px;
+            margin: 25px auto;
+            border-radius: 10px;
+            max-width: 800px;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            position: relative;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: var(--primary);
+        }
+
+        .game-image {
+            height: 200px;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .game-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(10, 10, 31, 0.95), transparent);
+            padding: 20px;
+        }
+
+        .game-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .game-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .play-button {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            color: var(--dark);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-size: 0.9rem;
+        }
+
+        .play-button:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .game-content {
+            padding: 20px;
+        }
+
+        .game-features {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .game-features li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .game-features li:before {
+            content: "▸";
+            color: var(--accent);
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        /* Telegram Support */
+        .telegram-support {
+            background: linear-gradient(135deg, 
+                rgba(0, 136, 204, 0.15), 
+                rgba(52, 183, 241, 0.15));
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+            border: 1px solid rgba(0, 136, 204, 0.3);
+            backdrop-filter: blur(20px);
+        }
+
+        .telegram-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .telegram-title {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .telegram-description {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .telegram-button {
+            display: inline-flex;
+            align-items: center;
+            background: var(--primary);
+            color: var(--dark);
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .telegram-button:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .telegram-button i {
+            margin-right: 10px;
+        }
+
+        /* License Info */
+        .license-info {
+            background: var(--glass);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+        }
+
+        .license-info i {
+            color: var(--accent);
+            margin-right: 10px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .age-restriction {
+            display: inline-block;
+            background: #ff4444;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .games-container {
-                flex-direction: column;
-                align-items: center;
+            .games-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
             
-            h1 {
-                font-size: 2.2rem;
+            .container {
+                padding: 15px;
+            }
+            
+            .game-card {
+                margin: 0 10px;
+            }
+            
+            .promo-banner {
+                margin: 20px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-image {
+                height: 180px;
+            }
+            
+            .telegram-support {
+                margin: 30px 10px;
+                padding: 20px;
+            }
+            
+            .license-info {
+                margin: 20px 10px;
             }
         }
     </style>
@@ -21,57 +390,106 @@ text-align: center;
 <body>
     <div class="container">
         <header>
-            <h1>Игровой портал</h1>
-            <p class="subtitle">Выберите одну из наших захватывающих игр и погрузитесь в мир азарта и развлечений!</p>
+            <h1 class="logo">GAMERUSH</h1>
+            <p class="tagline">Премиум игровая платформа с эксклюзивными бонусами</p>
+            
+            <!-- Промокод -->
+            <div class="promo-banner">
+                <h2 class="promo-title">🎯 ЭКСКЛЮЗИВНЫЙ ПРОМОКОД</h2>
+                <div class="promo-code">FestRU</div>
+                <p class="promo-description">Активируйте для получения бонуса +200% к первому депозиту!</p>
+            </div>
+            
+            <div class="warning">
+                <p><strong>⚠️ ВАЖНО:</strong> Азартные игры могут вызывать зависимость. Играйте ответственно. Только для лиц старше 18 лет.</p>
+            </div>
+            
+            <div class="license-info">
+                <i class="fas fa-shield-alt"></i> Лицензионные игры | 
+                <i class="fas fa-bolt"></i> Мгновенные выплаты |
+                <i class="fas fa-star"></i> Премиум сервис
+            </div>
         </header>
-        
-        <div class="games-container">
-            <!-- ↓↓↓ МЕСТО ДЛЯ ПЕРВОЙ ФОТОГРАФИИ ↓↓↓ -->
-            <div class="game-card">
-                <div class="game-image">
-                    <img src="https://avatars.mds.yandex.net/i?id=2a1e3cb3341208a3101304062cb48c4e5bd9b79d-16347695-images-thumbs&n=13" alt="Aviamaster">
-                </div>
-                <h2 class="game-title">Aviamaster</h2>
-                <p class="game-description">Станьте пилотом и управляйте самолетом в этой захватывающей авиационной игре. Покоряйте небеса и выполняйте сложные миссии!</p>
-                <!-- ↓↓↓ ПЕРВАЯ ССЫЛКА ↓↓↓ -->
-                <a href="https://1wclaa.life/casino/play/v_bgaming:Aviamasters?p=33wx" class="play-button">Играть сейчас</a>
+
+        <!-- Блок поддержки в Telegram -->
+        <div class="telegram-support">
+            <div class="telegram-icon">
+                <i class="fab fa-telegram"></i>
             </div>
-            
-            <!-- ↓↓↓ МЕСТО ДЛЯ ВТОРОЙ ФОТОГРАФИИ ↓↓↓ -->
-            <div class="game-card">
-                <div class="game-image">
-                    <img src="https://avatars.mds.yandex.net/i?id=2f8d2a6deffdc5bb3775227b653329463341a6fe-10636894-images-thumbs&n=13" alt="Ice Fishing">
-                </div>
-                <h2 class="game-title">Ice Fishing</h2>
-                <p class="game-description">Отправляйтесь на подледную рыбалку в арктических просторах. Поймайте самую большую рыбу и установите новый рекорд!</p>
-                <!-- ↓↓↓ ВТОРАЯ ССЫЛКА ↓↓↓ -->
-                <a href="https://1wclaa.life/casino/play/v_evolution:1winicefishing?p=33wx" class="play-button">Играть сейчас</a>
+            <div class="telegram-content">
+                <h2 class="telegram-title">ПОДДЕРЖКА 24/7</h2>
+                <p class="telegram-description">Наша команда поддержки всегда на связи! Ответим на все вопросы и поможем с любыми сложностями.</p>
+                <a href="https://t.me/Frenchgvinka" class="telegram-button" target="_blank">
+                    <i class="fab fa-telegram"></i> Написать в поддержку
+                </a>
             </div>
         </div>
-        
-        <div class="features">
-            <div class="feature">
-                <div class="feature-icon">⚡</div>
-                <h3 class="feature-title">Быстрый запуск</h3>
-                <p>Начните играть мгновенно без регистрации</p>
+
+        <div class="games-grid">
+            <!-- Aviamaster -->
+            <div class="game-card">
+                <div class="game-image" style="background-image: url('https://contentdeliverynetwork.cc/kirgo1/i/s6/softswiss/Aviamasters.webp');">
+                    <div class="game-overlay">
+                        <h3 class="game-title">AVIAMASTER</h3>
+                        <p class="game-description">Авиа-слот с прогрессивным джекпотом</p>
+                        <a href="https://1wclaa.life/casino/play/v_bgaming:Aviamasters?p=33wx" class="play-button">Играть сейчас</a>
+                    </div>
+                </div>
+                <div class="game-content">
+                    <p>Покорите небо и выиграйте прогрессивный джекпот! Бонусные полеты увеличивают ваши шансы на победу.</p>
+                    <ul class="game-features">
+                        <li>Прогрессивный джекпот</li>
+                        <li>Бонусные раунды с бесплатными спинами</li>
+                        <li>Высокая волатильность</li>
+                    </ul>
+                </div>
             </div>
-            
-            <div class="feature">
-                <div class="feature-icon">🎯</div>
-                <h3 class="feature-title">Простой геймплей</h3>
-                <p>Интуитивно понятное управление для всех</p>
-            </div>
-            
-            <div class="feature">
-                <div class="feature-icon">🏆</div>
-                <h3 class="feature-title">Достижения</h3>
-                <p>Зарабатывайте награды и соревнуйтесь с другими</p>
+
+            <!-- Ice Fishing -->
+            <div class="game-card">
+                <div class="game-image" style="background-image: url('https://i.mycdn.me/getVideoPreview?id=8914645748387&idx=13&type=39&tkn=_M-08_Oz-gNlImS7wgS7674NwI8&fn=vid_x');">
+                    <div class="game-overlay">
+                        <h3 class="game-title">ICE FISHING</h3>
+                        <p class="game-description">Расслабляющая игра с большими уловами</p>
+                        <a href="https://1wclaa.life/casino/play/v_evolution:1winicefishing?p=33wx" class="play-button">Играть сейчас</a>
+                    </div>
+                </div>
+                <div class="game-content">
+                    <p>Поймайте золотую рыбку и сорвите куш! Специальные бонусы за редкие виды рыб.</p>
+                    <ul class="game-features">
+                        <li>Уникальная механика рыбалки</li>
+                        <li>Коллекционные бонусы</li>
+                        <li>Расслабляющий геймплей</li>
+                    </ul>
+                </div>
             </div>
         </div>
-        
+
+        <div class="age-restriction">
+            <i class="fas fa-exclamation-triangle"></i> 18+
+        </div>
+
         <footer>
-            <p>© 2023 Игровой портал. Все права защищены. | Для лиц старше 18 лет</p>
+            <p>© 2024 GameRush. Лицензионные азартные игры. Только для лиц старше 18 лет. Играйте ответственно.</p>
         </footer>
     </div>
+
+    <script>
+        // Простая анимация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.game-card');
+            
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 200 * index);
+            });
+        });
+    </script>
 </body>
 </html>
